@@ -1,0 +1,32 @@
+name: Test
+
+on:
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  run_tests:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: |
+          npm run dev &
+          curl --retry 10 --retry-connrefused --retry-delay 1 --fail --silent --output /dev/null http://localhost:3000/
+          npm test
+      - name: Upload Cypress reports
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: report
+          path: raw_reports
