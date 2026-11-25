@@ -83,5 +83,60 @@
     "badge": "New",
     "add": "Add to cart",
     "favorite": "Favorite: {{product}}"
+  },
+  "shopCategories": {
+    "title": "Categories",
+    "subtitle": "Find the right device by category",
+    "models_one": "{{count}} model",
+    "models_other": "{{count}} models"
+  },
+  "hotPricesSubtitle": "Special offers, including 1 TB Pro models",
+  "footerNav": "Store links",
+  "productDetails": {
+    "breadcrumbs": "Breadcrumbs",
+    "gallery": "Product photos",
+    "photo": "Photo {{number}}",
+    "size": "Choose a size"
+  },
+  "cartPage": {
+    "continue": "Continue shopping",
+    "empty": "Your cart is empty",
+    "phones": "Smartphone",
+    "tablets": "Tablet",
+    "accessories": "Accessory",
+    "watch": "Smartwatch",
+    "inStock": "In stock",
+    "remove": "Remove {{product}}",
+    "quantity": "Quantity for {{product}}",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "itemCount_one": "Total for {{count}} item",
+    "itemCount_other": "Total for {{count}} items",
+    "shipping": "Delivery",
+    "free": "Free",
+    "freeShipping": "Free delivery",
+    "warranty": "Warranty",
+    "warrantyTerm": "12 months",
+    "payment": "Secure card payment or payment on delivery"
+  },
+  "favoritesPage": {
+    "count_one": "{{count}} item",
+    "count_other": "{{count}} items",
+    "empty": "You have no favorites yet"
+  },
+  "mobileMenu": {
+    "close": "Close menu",
+    "theme": "Appearance",
+    "language": "Interface language",
+    "light": "Light",
+    "dark": "Dark",
+    "shortcuts": "Favorites and cart",
+    "home": "Home",
+    "phones": "Phones"
+  },
+  "catalogPage": {
+    "show": "Show:",
+    "pagination": "Catalog pages",
+    "page": "Page {{number}}"
   }
 }

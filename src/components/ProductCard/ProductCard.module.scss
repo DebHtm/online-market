@@ -57,6 +57,12 @@
   font-weight: 800;
 }
 
+.discount {
+  border-color: transparent;
+  color: var(--color-red-text);
+  background: var(--color-red-bg);
+}
+
 .title {
   min-height: 2.7em;
   margin: 15px 0 6px;

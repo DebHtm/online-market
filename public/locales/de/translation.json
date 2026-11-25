@@ -83,5 +83,60 @@
     "badge": "Neu",
     "add": "In den Korb",
     "favorite": "Favorit: {{product}}"
+  },
+  "shopCategories": {
+    "title": "Kategorien",
+    "subtitle": "Finde das passende Gerät nach Kategorie",
+    "models_one": "{{count}} Modell",
+    "models_other": "{{count}} Modelle"
+  },
+  "hotPricesSubtitle": "Sonderangebote, auch für Pro-Modelle mit 1 TB",
+  "footerNav": "Shop-Links",
+  "productDetails": {
+    "breadcrumbs": "Brotkrumennavigation",
+    "gallery": "Produktbilder",
+    "photo": "Bild {{number}}",
+    "size": "Größe auswählen"
+  },
+  "cartPage": {
+    "continue": "Weiter einkaufen",
+    "empty": "Dein Warenkorb ist leer",
+    "phones": "Smartphone",
+    "tablets": "Tablet",
+    "accessories": "Zubehör",
+    "watch": "Smartwatch",
+    "inStock": "Auf Lager",
+    "remove": "{{product}} entfernen",
+    "quantity": "Menge für {{product}}",
+    "decrease": "Menge verringern",
+    "increase": "Menge erhöhen",
+    "itemCount_one": "Gesamt für {{count}} Artikel",
+    "itemCount_other": "Gesamt für {{count}} Artikel",
+    "shipping": "Lieferung",
+    "free": "Kostenlos",
+    "freeShipping": "Gratislieferung",
+    "warranty": "Garantie",
+    "warrantyTerm": "12 Monate",
+    "payment": "Sichere Kartenzahlung oder Zahlung bei Lieferung"
+  },
+  "favoritesPage": {
+    "count_one": "{{count}} Artikel",
+    "count_other": "{{count}} Artikel",
+    "empty": "Du hast noch keine Favoriten"
+  },
+  "mobileMenu": {
+    "close": "Menü schließen",
+    "theme": "Darstellung",
+    "language": "Sprache der Oberfläche",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "shortcuts": "Favoriten und Warenkorb",
+    "home": "Startseite",
+    "phones": "Handys"
+  },
+  "catalogPage": {
+    "show": "Anzeigen:",
+    "pagination": "Katalogseiten",
+    "page": "Seite {{number}}"
   }
 }

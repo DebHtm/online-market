@@ -1,67 +1,57 @@
+﻿import { ChevronUp, Zap } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import styles from './Footer.module.scss';
-import { useTranslation } from 'react-i18next';
+
+const repository = 'https://github.com/DebHtm/online-market';
+const links = [
+  { label: 'git', href: repository },
+  { label: 'contact', href: 'https://github.com/DebHtm' },
+  { label: 'right', href: repository + '/blob/main/LICENSE' },
+];
 
 export const Footer = () => {
   const { t } = useTranslation();
 
   return (
     <footer className={styles.footer}>
-      <div className={styles.containetfotter}>
-        <Link to="/" className={styles.logo}>
-          <img src="./img/logo/Logo.svg" alt="Nice Gadgets" />
+      <div className={styles.inner}>
+        <Link to="/home" className={styles.brand}>
+          <span className={styles.mark}>
+            <Zap size={16} aria-hidden="true" />
+          </span>
+          Nice Gadgets
         </Link>
-        <nav className={styles.nav}>
-          <ul className={styles.list}>
-            <li className={styles.li_links}>
-              <a
-                // eslint-disable-next-line max-len
-                href="git remote add origin https://github.com/DebHtm/online-market"
-                className={styles.link}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {t('git')}
-              </a>
-            </li>
-            <li className={styles.li_links}>
-              <a
-                href="https://github.com/DebHtm"
-                className={styles.link}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {t('contact')}
-              </a>
-            </li>
-            <li className={styles.li_links}>
-              <a
-                href="https://github.com/DebHtm"
-                className={styles.link}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {t('right')}
-              </a>
-            </li>
-          </ul>
-        </nav>
-        <div className={styles.upscrole}>
-          <p className={styles.textscrole}>{t('toup')}</p>
-          <div className={styles.boxArrow}>
-            <button
-              className={styles.icon}
-              onClick={() =>
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth',
-                })
-              }
+        <nav className={styles.nav} aria-label={t('footerNav')}>
+          {links.map(({ label, href }) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <img src="./img/icons/arrowUp.svg" alt="Arrow" />
-            </button>
-          </div>
-        </div>
+              {t(label)}
+            </a>
+          ))}
+        </nav>
+        <button
+          type="button"
+          className={styles.top}
+          onClick={() =>
+            window.scrollTo({
+              top: 0,
+              behavior: window.matchMedia('(prefers-reduced-motion: reduce)')
+                .matches
+                ? 'instant'
+                : 'smooth',
+            })
+          }
+        >
+          {t('toup')}
+          <span className={styles.chevron}>
+            <ChevronUp size={18} aria-hidden="true" />
+          </span>
+        </button>
       </div>
     </footer>
   );

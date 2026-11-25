@@ -1,52 +1,103 @@
-@use '../../styles/grid' as *;
-@use '../../styles/breakpoints' as *;
-
-.productlist {
-  @include grid;
-
-  row-gap: 40px;
+﻿.section {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1238px;
+  padding: clamp(24px, 3vw, 44px) 24px clamp(42px, 7vw, 90px);
+  margin-inline: auto;
 }
 
-.productItem {
-  @include span(6, 6, 4);
-}
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-secondary);
+  font-size: 13px;
 
-.box {
-  @include container;
+  a {
+    display: inline-flex;
+    color: inherit;
+  }
 
-  margin-bottom: 80px;
+  span {
+    color: var(--color-primary);
+    font-weight: 800;
+  }
 }
 
 .title {
-  @include span(24);
-
-  margin: 0;
-  font-family: Mont, sans-serif;
-  font-weight: 800;
-  font-size: 48px;
-  line-height: 56px;
-  letter-spacing: -1%;
-
+  margin: 19px 0 5px;
   color: var(--color-primary);
+  font-size: clamp(34px, 4vw, 46px);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+}
 
-  @include tablet {
-    @include span(8);
-  }
+.count {
+  margin: 0;
+  color: var(--color-secondary);
+  font-size: 14px;
+}
 
-  @include mobile {
-    @include span(4);
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  padding: 0;
+  margin: 30px 0 0;
+  list-style: none;
 
-    font-size: 32px;
-    line-height: 41px;
+  li {
+    display: grid;
+    min-width: 0;
   }
 }
 
-.lengthitm {
-  font-family: Mont, sans-serif;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 21px;
-  letter-spacing: 0%;
-
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 32px 18px;
+  border: 1px solid var(--color-elements);
+  border-radius: 18px;
+  margin-top: 24px;
   color: var(--color-secondary);
+  background: var(--color-white);
+  text-align: center;
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: var(--color-accent);
+    font-weight: 800;
+  }
+}
+
+.breadcrumbs a:hover {
+  color: var(--color-accent);
+}
+
+@media (width <= 900px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (width <= 760px) {
+  .section {
+    padding-inline: 14px;
+  }
+
+  .title {
+    font-size: clamp(29px, 7vw, 38px);
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 22px;
+  }
 }

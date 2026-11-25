@@ -83,5 +83,66 @@
     "badge": "Новинка",
     "add": "В кошик",
     "favorite": "Обране: {{product}}"
+  },
+  "shopCategories": {
+    "title": "Категорії",
+    "subtitle": "Обирайте потрібний пристрій за напрямком",
+    "models_one": "{{count}} модель",
+    "models_few": "{{count}} моделі",
+    "models_many": "{{count}} моделей",
+    "models_other": "{{count}} моделі"
+  },
+  "hotPricesSubtitle": "Спеціальні пропозиції, зокрема на моделі Pro 1 ТБ",
+  "footerNav": "Посилання магазину",
+  "productDetails": {
+    "breadcrumbs": "Шлях до товару",
+    "gallery": "Фотографії товару",
+    "photo": "Фото {{number}}",
+    "size": "Оберіть розмір"
+  },
+  "cartPage": {
+    "continue": "Продовжити покупки",
+    "empty": "Ваш кошик порожній",
+    "phones": "Смартфон",
+    "tablets": "Планшет",
+    "accessories": "Аксесуар",
+    "watch": "Смарт-годинник",
+    "inStock": "В наявності",
+    "remove": "Видалити {{product}}",
+    "quantity": "Кількість: {{product}}",
+    "decrease": "Зменшити кількість",
+    "increase": "Збільшити кількість",
+    "itemCount_one": "Разом за {{count}} товар",
+    "itemCount_other": "Разом за {{count}} товару",
+    "shipping": "Доставка",
+    "free": "Безкоштовно",
+    "freeShipping": "Безкоштовна доставка",
+    "warranty": "Гарантія",
+    "warrantyTerm": "12 місяців",
+    "payment": "Безпечна оплата карткою або при отриманні",
+    "itemCount_few": "Разом за {{count}} товари",
+    "itemCount_many": "Разом за {{count}} товарів"
+  },
+  "favoritesPage": {
+    "count_one": "{{count}} елемент",
+    "count_other": "{{count}} елемента",
+    "empty": "У вас ще немає обраних товарів",
+    "count_few": "{{count}} елементи",
+    "count_many": "{{count}} елементів"
+  },
+  "mobileMenu": {
+    "close": "Закрити меню",
+    "theme": "Тема оформлення",
+    "language": "Мова інтерфейсу",
+    "light": "Світла",
+    "dark": "Темна",
+    "shortcuts": "Обране і кошик",
+    "home": "Дім",
+    "phones": "Телефони"
+  },
+  "catalogPage": {
+    "show": "Показати:",
+    "pagination": "Сторінки каталогу",
+    "page": "Сторінка {{number}}"
   }
 }

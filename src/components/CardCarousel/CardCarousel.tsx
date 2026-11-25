@@ -10,6 +10,9 @@ type Props = {
   products: Product[];
   title: string;
   fullPrice: boolean;
+  showDiscount?: boolean;
+  compactCards?: boolean;
+  subtitle?: string;
   newModels?: { subtitle: string; catalogPath: string };
 };
 
@@ -17,6 +20,9 @@ export const CardCarousel = ({
   products,
   title,
   fullPrice,
+  showDiscount = false,
+  compactCards = false,
+  subtitle,
   newModels,
 }: Props) => {
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -101,7 +107,9 @@ export const CardCarousel = ({
           <h2 id={titleId} className={styles.title}>
             {title}
           </h2>
-          {newModels && <p className={styles.subtitle}>{newModels.subtitle}</p>}
+          {(subtitle || newModels?.subtitle) && (
+            <p className={styles.subtitle}>{subtitle || newModels?.subtitle}</p>
+          )}
         </div>
 
         {newModels && (
@@ -137,7 +145,8 @@ export const CardCarousel = ({
             key={product.id}
             product={product}
             turnon={fullPrice}
-            compact={Boolean(newModels)}
+            showDiscount={showDiscount}
+            compact={compactCards || Boolean(newModels)}
             isNew={newProductIds.has(product.id)}
           />
         ))}

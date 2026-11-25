@@ -11,6 +11,7 @@ type Props = {
   turnon: boolean;
   compact?: boolean;
   isNew?: boolean;
+  showDiscount?: boolean;
 };
 
 const formatPrice = new Intl.NumberFormat('en-US', {
@@ -24,10 +25,11 @@ export const ProductCard = ({
   turnon,
   compact = false,
   isNew = false,
+  showDiscount = false,
 }: Props) => {
   const { cart, favorites, toggleCart, toggleFavorite } =
     useContext(ProductsContext);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const location = useLocation();
   const isAdded = cart.some(item => item.id === product.itemId);
   const isFavorite = favorites.some(item => item.id === product.itemId);
@@ -45,6 +47,10 @@ export const ProductCard = ({
 
   const brand = product.name.startsWith('Apple ') ? 'Apple ' : '';
   const name = product.name.slice(brand.length);
+  const discount =
+    showDiscount && product.fullPrice > 0 && product.price < product.fullPrice
+      ? (product.fullPrice - product.price) / product.fullPrice
+      : 0;
 
   return (
     <article
@@ -52,7 +58,16 @@ export const ProductCard = ({
     >
       <div className={styles.media}>
         <img src={`./${product.image}`} alt="" loading="lazy" />
-        {isNew && <span className={styles.badge}>{t('newModels.badge')}</span>}
+        {discount > 0 ? (
+          <span className={`${styles.badge} ${styles.discount}`}>
+            {new Intl.NumberFormat(i18n.resolvedLanguage, {
+              style: 'percent',
+              maximumFractionDigits: discount < 0.01 ? 2 : 0,
+            }).format(-discount)}
+          </span>
+        ) : (
+          isNew && <span className={styles.badge}>{t('newModels.badge')}</span>
+        )}
       </div>
 
       <h3 className={styles.title}>

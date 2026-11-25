@@ -1,121 +1,197 @@
-import styles from './Cart.module.scss';
+﻿import {
+  ArrowLeft,
+  ArrowRight,
+  ChevronRight,
+  House,
+  Minus,
+  Plus,
+  ShieldCheck,
+  ShoppingBag,
+  X,
+} from 'lucide-react';
 import { useContext } from 'react';
-import { ProductsContext } from '../../context/ProductsContext';
-import { useProducts } from '../../hooks/useProducts';
-import { NavigateBar } from '../NavigateBar';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { ProductsContext } from '../../context/ProductsContext';
+import styles from './Cart.module.scss';
+
+const currency = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 0,
+});
 
 export const Cart = () => {
-  const { cart, counts, total, totalItems, increase, decrease, deletCard } =
-    useContext(ProductsContext);
-  const { products } = useProducts();
+  const {
+    cart,
+    products,
+    isLoading,
+    counts,
+    total,
+    totalItems,
+    increase,
+    decrease,
+    deletCard,
+  } = useContext(ProductsContext);
   const { t } = useTranslation();
 
-  const productsMap = Object.fromEntries(
+  const productsMap = new Map(
     products.map(product => [product.itemId, product]),
   );
+  const items = cart.flatMap(({ id }) => {
+    const product = productsMap.get(id);
 
-  const handleCheckout = () => {
-    const confirmed = window.confirm(t('check'));
-
-    if (confirmed) {
-      cart.forEach(item => deletCard(item.id));
-    }
-  };
+    return product ? [{ product, quantity: counts[id] || 1 }] : [];
+  });
 
   return (
-    <div className={styles.box}>
-      <NavigateBar />
-      <h1 className={styles.title}>{t('cart')}</h1>
+    <section className={styles.cart} aria-labelledby="cart-heading">
+      <nav
+        className={styles.breadcrumbs}
+        aria-label={t('productDetails.breadcrumbs')}
+      >
+        <Link to="/home" aria-label={t('home')}>
+          <House size={15} aria-hidden="true" />
+        </Link>
+        <ChevronRight size={14} aria-hidden="true" />
+        <span aria-current="page">{t('cart')}</span>
+      </nav>
 
-      <div className={styles.productlist}>
-        <div className={styles.boxlist}>
-          {cart.map(item => {
-            const product = productsMap[item.id];
-
-            if (!product) {
-              return null;
-            }
-
-            const score = counts[item.id] || 1;
-            const cartprice = score * product.fullPrice;
-
-            return (
-              <Link
-                key={item.id}
-                className={styles.productItem}
-                to={`/${product.category}/${product.itemId}`}
-              >
-                <button
-                  className={styles.delet}
-                  onClick={e => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    deletCard(item.id);
-                  }}
-                >
-                  <img src="./img/icons/clouse.svg" alt="Close" />
-                </button>
-
-                <div className={styles.boximg}>
-                  <img
-                    src={`./${product.image}`}
-                    alt="Img"
-                    className={styles.img}
-                  />
-                </div>
-
-                <p className={styles.text}>{product.name}</p>
-
-                <div className={styles.count}>
-                  <button
-                    className={styles.add}
-                    onClick={e => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      increase(item.id);
-                    }}
-                  >
-                    <img src="./img/icons/Plus.svg" alt="Plus" />
-                  </button>
-
-                  <p className={styles.howmuch}>{score}</p>
-
-                  <button
-                    className={styles.add}
-                    onClick={e => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      decrease(item.id);
-                    }}
-                  >
-                    <img src="./img/icons/Minus.svg" alt="Minus" />
-                  </button>
-                </div>
-
-                <p className={styles.pryce}>${cartprice}</p>
-              </Link>
-            );
-          })}
-        </div>
-
-        <div className={styles.forbuy}>
-          <p className={styles.total}>
-            {t('total')}: ${total}
-          </p>
-
-          <p className={styles.howitms}>
-            {t('otalfor')} {totalItems} {t('items')}
-          </p>
-
-          <div className={styles.line}></div>
-
-          <button className={styles.checkout} onClick={handleCheckout}>
-            {t('checkout')}
-          </button>
-        </div>
+      <div className={styles.heading}>
+        <h1 id="cart-heading">{t('cart')}</h1>
+        {items.length > 0 && (
+          <Link to="/phones" className={styles.continue}>
+            <ArrowLeft size={16} aria-hidden="true" />
+            {t('cartPage.continue')}
+          </Link>
+        )}
       </div>
-    </div>
+
+      {isLoading && cart.length > 0 && items.length === 0 ? (
+        <p className={styles.empty} role="status">
+          {t('header.loading')}
+        </p>
+      ) : items.length === 0 ? (
+        <div className={styles.empty}>
+          <ShoppingBag size={32} aria-hidden="true" />
+          <p>{t('cartPage.empty')}</p>
+          <Link to="/phones" className={styles.continue}>
+            {t('cartPage.continue')}
+          </Link>
+        </div>
+      ) : (
+        <div className={styles.content}>
+          <ul className={styles.items}>
+            {items.map(({ product, quantity }) => {
+              const id = product.itemId;
+              const path = `/${product.category}/${id}`;
+              const type = t(
+                product.category === 'accessories' &&
+                  /watch/i.test(product.name)
+                  ? 'cartPage.watch'
+                  : `cartPage.${product.category}`,
+              );
+
+              return (
+                <li key={id} className={styles.item}>
+                  <button
+                    type="button"
+                    className={styles.remove}
+                    aria-label={t('cartPage.remove', { product: product.name })}
+                    onClick={() => deletCard(id)}
+                  >
+                    <X size={16} aria-hidden="true" />
+                  </button>
+                  <Link
+                    className={styles.image}
+                    to={path}
+                    aria-label={product.name}
+                  >
+                    <img src={`./${product.image}`} alt="" loading="lazy" />
+                  </Link>
+                  <div className={styles.product}>
+                    <Link to={path}>{product.name}</Link>
+                    <p>
+                      <span className={styles.type}>{type} · </span>
+                      {product.capacity} · {t('cartPage.inStock')}
+                    </p>
+                  </div>
+                  <div
+                    className={styles.quantity}
+                    role="group"
+                    aria-label={t('cartPage.quantity', {
+                      product: product.name,
+                    })}
+                  >
+                    <button
+                      type="button"
+                      aria-label={t('cartPage.decrease')}
+                      disabled={quantity <= 1}
+                      onClick={() => decrease(id)}
+                    >
+                      <Minus size={15} aria-hidden="true" />
+                    </button>
+                    <span>{quantity}</span>
+                    <button
+                      type="button"
+                      aria-label={t('cartPage.increase')}
+                      onClick={() => increase(id)}
+                    >
+                      <Plus size={15} aria-hidden="true" />
+                    </button>
+                  </div>
+                  <strong className={styles.price}>
+                    {currency.format(product.fullPrice * quantity)}
+                  </strong>
+                </li>
+              );
+            })}
+          </ul>
+
+          <aside className={styles.summary} aria-labelledby="cart-total">
+            <p className={styles['item-count']}>
+              {t('cartPage.itemCount', { count: totalItems })}
+            </p>
+            <h2 className={styles.total} id="cart-total">
+              <span>{t('total')}</span>
+              <strong>{currency.format(total)}</strong>
+            </h2>
+            <dl className={styles.services}>
+              <div className={styles.shipping}>
+                <dt>{t('cartPage.shipping')}</dt>
+                <dd className={styles.free}>
+                  <span className={styles['full-label']}>
+                    {t('cartPage.free')}
+                  </span>
+                  <span className={styles['short-label']}>
+                    {t('cartPage.freeShipping')}
+                  </span>
+                </dd>
+              </div>
+              <div className={styles.warranty}>
+                <dt>{t('cartPage.warranty')}</dt>
+                <dd>{t('cartPage.warrantyTerm')}</dd>
+              </div>
+            </dl>
+            <button
+              type="button"
+              className={styles.checkout}
+              onClick={() => {
+                if (window.confirm(t('check'))) {
+                  cart.forEach(item => deletCard(item.id));
+                }
+              }}
+            >
+              {t('checkout')}
+              <ArrowRight size={18} aria-hidden="true" />
+            </button>
+            <p className={styles.payment}>
+              <ShieldCheck size={16} aria-hidden="true" />
+              {t('cartPage.payment')}
+            </p>
+          </aside>
+        </div>
+      )}
+    </section>
   );
 };

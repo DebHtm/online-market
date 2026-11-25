@@ -275,6 +275,18 @@
   }
 }
 
+.icon-button[aria-current='page'] {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-image-bg);
+}
+
+.favorites-button[aria-current='page'] {
+  border-color: var(--color-red-bg);
+  color: var(--color-red);
+  background: var(--color-red-bg);
+}
+
 .badge {
   position: absolute;
   top: -7px;
@@ -324,7 +336,6 @@
   .inner {
     grid-template-areas:
       'menu brand actions'
-      'settings settings settings'
       'search search search'
       'nav nav nav';
     grid-template-columns: auto minmax(0, 1fr) auto;
@@ -411,8 +422,7 @@
     display: inline;
   }
 
-  .search.search-open,
-  .settings.settings-open {
+  .search.search-open {
     display: flex;
     max-width: none;
     margin-top: 10px;
@@ -425,6 +435,62 @@
 
 @media (prefers-reduced-motion: reduce) {
   .header {
+    --header-motion: 0ms;
+  }
+}
+
+@include mobile {
+  .mobile-settings {
+    display: grid;
+    gap: 18px;
+
+    p {
+      margin: 0 0 8px;
+      color: var(--color-secondary);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .segment {
+      --segment-gap: 4px;
+      --segment-width: calc((100% - 12px) / 2);
+      --header-motion: 280ms cubic-bezier(0.22, 1, 0.36, 1);
+
+      padding: 4px;
+      background: var(--color-image-bg);
+
+      &:has(button:nth-child(3)) {
+        --segment-width: calc((100% - 16px) / 3);
+      }
+
+      &::before {
+        height: 40px;
+        background: color-mix(
+          in srgb,
+          var(--color-primary) 8%,
+          var(--color-image-bg)
+        );
+        transform: translateX(calc(var(--segment-index, 0) * (100% + 4px)));
+      }
+
+      button {
+        display: flex;
+        width: auto;
+        min-width: 0;
+        height: 40px;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-settings .segment {
     --header-motion: 0ms;
   }
 }

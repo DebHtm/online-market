@@ -71,6 +71,8 @@ export const HomePage: React.FC = () => {
       <CardCarousel
         products={hotPrices}
         title={t('titleprice')}
+        subtitle={t('hotPricesSubtitle')}
+        showDiscount
         fullPrice={true}
       />
       <div className={styles.box}>

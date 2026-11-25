@@ -1,10 +1,9 @@
-import React from 'react';
-import styles from './Category.module.scss';
-import { Products } from '../../types/Product';
+﻿import { ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useProducts } from '../../hooks/useProducts';
-import ContentLoader from 'react-content-loader';
-import { useTranslation } from 'react-i18next';
+import { Products } from '../../types/Product';
+import styles from './Category.module.scss';
 
 type Props = {
   phones: Products[];
@@ -12,94 +11,51 @@ type Props = {
   accessories: Products[];
 };
 
-export const Category: React.FC<Props> = ({ phones, tablets, accessories }) => {
+const categories = [
+  { id: 'phones', title: 'mobile' },
+  { id: 'tablets', title: 'tablets' },
+  { id: 'accessories', title: 'accessories' },
+] as const;
+
+export const Category = (products: Props) => {
   const { isLoading } = useProducts();
   const { t } = useTranslation();
 
   return (
-    <div className={styles.categorycontainer}>
-      <h2 className={styles.title}>{t('titlecategory')}</h2>
-      <Link className={styles.boxcategory} to={'/phones'}>
-        <div className={styles.imgbox1}>
-          <img
-            src="./img/category-phones.webp"
-            alt="Category"
-            className={styles.img}
-          />
-        </div>
-
-        <h3 className={styles.categorytitle}>{t('mobile')}</h3>
-        <p className={styles.text}>
-          {isLoading ? (
-            <ContentLoader
-              speed={2}
-              width={100}
-              height={20}
-              viewBox="0 0 100 20"
-              backgroundColor="#f3f3f3"
-              foregroundColor="#ecebeb"
-            >
-              <rect x="7" y="5" rx="3" ry="3" width="88" height="6" />
-            </ContentLoader>
-          ) : (
-            `${phones.length} ${t('model')}`
-          )}
-        </p>
-      </Link>
-      <Link className={styles.boxcategory} to={'/tablets'}>
-        <div className={styles.imgbox2}>
-          <img
-            src="./img/category-tablets.webp"
-            alt="Category"
-            className={styles.img}
-          />
-        </div>
-
-        <h3 className={styles.categorytitle}>{t('tablets')}</h3>
-        <p className={styles.text}>
-          {isLoading ? (
-            <ContentLoader
-              speed={2}
-              width={100}
-              height={20}
-              viewBox="0 0 100 20"
-              backgroundColor="#f3f3f3"
-              foregroundColor="#ecebeb"
-            >
-              <rect x="7" y="5" rx="3" ry="3" width="88" height="6" />
-            </ContentLoader>
-          ) : (
-            `${tablets.length} ${t('model')}`
-          )}
-        </p>
-      </Link>
-      <Link className={styles.boxcategory} to={'/accessories'}>
-        <div className={styles.imgbox3}>
-          <img
-            src="./img/category-accessories.webp"
-            alt="Category"
-            className={styles.img}
-          />
-        </div>
-
-        <h3 className={styles.categorytitle}>{t('accessories')}</h3>
-        <p className={styles.text}>
-          {isLoading ? (
-            <ContentLoader
-              speed={2}
-              width={100}
-              height={20}
-              viewBox="0 0 100 20"
-              backgroundColor="#f3f3f3"
-              foregroundColor="#ecebeb"
-            >
-              <rect x="7" y="5" rx="3" ry="3" width="88" height="6" />
-            </ContentLoader>
-          ) : (
-            `${accessories.length} ${t('model')}`
-          )}
-        </p>
-      </Link>
-    </div>
+    <section className={styles.section} aria-labelledby="category-heading">
+      <h2 id="category-heading" className={styles.title}>
+        <span className={styles['wide-title']}>{t('titlecategory')}</span>
+        <span className={styles['short-title']}>
+          {t('shopCategories.title')}
+        </span>
+      </h2>
+      <p className={styles.subtitle}>{t('shopCategories.subtitle')}</p>
+      <div className={styles.grid} aria-busy={isLoading}>
+        {categories.map(({ id, title }) => (
+          <Link
+            key={id}
+            className={`${styles.card} ${styles[id]}`}
+            to={`/${id}`}
+          >
+            <div className={styles.details}>
+              <h3>{t(title)}</h3>
+              {isLoading ? (
+                <span className={styles.skeleton} aria-hidden="true" />
+              ) : (
+                <p>
+                  {t('shopCategories.models', { count: products[id].length })}
+                </p>
+              )}
+            </div>
+            <span className={styles.arrow} aria-hidden="true">
+              <ArrowRight size={16} />
+            </span>
+            <div className={styles.media}>
+              <img src={`./img/category-${id}.webp`} alt="" loading="lazy" />
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
   );
 };

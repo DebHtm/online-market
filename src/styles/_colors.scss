@@ -1,5 +1,4 @@
 :root {
-  /* Ваши старые переменные — обновлённые значения */
   --color-primary: #111111;
   --color-secondary: #434655;
   --color-icons: #737686;
@@ -9,7 +8,6 @@
   --color-green: #16A34A;
   --color-red: #BA1A1A;
 
-  /* Новые переменные из редизайна */
   --color-accent: #2563EB;
   --color-accent-hover: #004AC6;
   --color-on-accent: #FFFFFF;
@@ -21,7 +19,6 @@
 }
 
 .dark {
-  /* Переопределение 5 основных пар для тёмной темы */
   --color-primary: #E1E2ED;
   --color-secondary: #C3C6D7;
   --color-icons: #8D90A0;

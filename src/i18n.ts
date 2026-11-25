@@ -17,12 +17,16 @@ i18n
       de: {
         translation: de,
       },
-      ua: {
+      uk: {
         translation: ua,
       },
     },
 
     fallbackLng: 'en',
+    detection: {
+      convertDetectedLanguage: language =>
+        language.replace(/^ua(?=-|$)/i, 'uk'),
+    },
 
     interpolation: {
       escapeValue: false,
