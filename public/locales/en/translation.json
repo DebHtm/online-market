@@ -1,10 +1,10 @@
 {
   "title": "Welcome to Nice Gadgets store!",
-  "textincarusel": "Now available in our store!👌",
-  "secoundtext": "Be the first!",
-  "buttuncarusel": "ORDER NOW",
+  "textincarusel": "Now available in our store!",
+  "secoundtext": "Be among the first to explore flagship models with an official warranty and trade-in offers.",
+  "buttuncarusel": "Order now",
   "titlebrend": "Brand new models",
-  "button": "Add to card",
+  "button": "Add to cart",
   "buttonadd": "Added",
   "screen": "Screen",
   "capacity": "Capacity",
@@ -52,5 +52,36 @@
   "all": "All",
   "emptyCategory": "There are no products in this category yet.",
   "previousPage": "Previous page",
-  "nextPage": "Next page"
+  "nextPage": "Next page",
+  "header": {
+    "all": "All",
+    "menu": "Menu",
+    "categories": "Categories",
+    "search": "Search products",
+    "placeholder": "Search iPhone, iPad, Watch…",
+    "empty": "No products found",
+    "loading": "Loading products…",
+    "theme": "Theme",
+    "light": "Light theme",
+    "dark": "Dark theme",
+    "language": "Language",
+    "favorites": "Favorites ({{count}})",
+    "cart": "Cart ({{count}})"
+  },
+  "hero": {
+    "subtitle": "Official Apple products with a 12-month warranty and delivery within 24 hours.",
+    "collection": "New collection 2026",
+    "catalog": "Browse catalog",
+    "carousel": "Store highlights",
+    "previous": "Previous slide",
+    "next": "Next slide",
+    "slide": "Slide {{number}}"
+  },
+  "newModels": {
+    "subtitle": "Latest iPhone 14 arrivals in every color",
+    "all": "All models",
+    "badge": "New",
+    "add": "Add to cart",
+    "favorite": "Favorite: {{product}}"
+  }
 }

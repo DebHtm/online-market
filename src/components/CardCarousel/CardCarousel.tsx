@@ -1,64 +1,145 @@
-import React, { useRef } from 'react';
-import styles from './CardCarousel.module.scss';
+﻿import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { Product } from '../../types/Product';
 import { ProductCard } from '../ProductCard';
+import styles from './CardCarousel.module.scss';
+
 type Props = {
   products: Product[];
   title: string;
   fullPrice: boolean;
+  newModels?: { subtitle: string; catalogPath: string };
 };
 
-export const CardCarousel: React.FC<Props> = ({
+export const CardCarousel = ({
   products,
   title,
   fullPrice,
-}) => {
+  newModels,
+}: Props) => {
   const sliderRef = useRef<HTMLDivElement>(null);
+  const [edges, setEdges] = useState({ start: true, end: true });
+  const { t } = useTranslation();
+  const titleId = useId();
+  const sliderId = useId();
+  const visibleProducts = useMemo(() => {
+    if (title === 'You may also like') {
+      return [...products].sort(() => Math.random() - 0.5).slice(0, 30);
+    }
 
-  const scrollLeft = () => {
-    const card = sliderRef.current?.firstElementChild as HTMLElement;
-    const cardWidth = card?.offsetWidth + 16;
+    return products;
+  }, [products, title]);
 
-    sliderRef.current?.scrollBy({
-      left: -cardWidth,
-      behavior: 'smooth',
-    });
+  const newProductIds = useMemo(() => {
+    const ids = new Set<number>();
+    const images = new Set<string>();
+    const latestYear = visibleProducts[0]?.year;
+
+    if (newModels) {
+      for (const product of visibleProducts) {
+        if (product.year === latestYear && !images.has(product.image)) {
+          ids.add(product.id);
+          images.add(product.image);
+        }
+      }
+    }
+
+    return ids;
+  }, [newModels, visibleProducts]);
+
+  useEffect(() => {
+    const slider = sliderRef.current;
+    if (!slider) {
+      return;
+    }
+
+    const updateEdges = () => {
+      const start = slider.scrollLeft <= 1;
+      const end =
+        slider.scrollWidth - slider.clientWidth - slider.scrollLeft <= 1;
+      setEdges(previous =>
+        previous.start === start && previous.end === end
+          ? previous
+          : { start, end },
+      );
+    };
+
+    const observer = new ResizeObserver(updateEdges);
+    observer.observe(slider);
+    slider.addEventListener('scroll', updateEdges, { passive: true });
+    updateEdges();
+
+    return () => {
+      observer.disconnect();
+      slider.removeEventListener('scroll', updateEdges);
+    };
+  }, [visibleProducts]);
+
+  const move = (direction: -1 | 1) => {
+    const slider = sliderRef.current;
+    const nextCard = slider?.children[1];
+    if (!(nextCard instanceof HTMLElement) || !slider) {
+      return;
+    }
+
+    const step = nextCard.offsetLeft;
+    const index = Math.round(slider.scrollLeft / step);
+    slider.scrollTo({ left: (index + direction) * step });
   };
-
-  const scrollRight = () => {
-    const card = sliderRef.current?.firstElementChild as HTMLElement;
-    const cardWidth = card?.offsetWidth + 16;
-
-    sliderRef.current?.scrollBy({
-      left: cardWidth,
-      behavior: 'smooth',
-    });
-  };
-
-  let vieProduct = [...products];
-
-  if (title === 'You may also like') {
-    vieProduct = [...products].sort(() => Math.random() - 0.5).slice(0, 30);
-  }
 
   return (
-    <section className={styles.sliderSection}>
+    <section
+      className={
+        newModels ? `${styles.section} ${styles.showcase}` : styles.section
+      }
+      aria-labelledby={titleId}
+    >
       <div className={styles.header}>
-        <h2 className={styles.titleh2}>{title}</h2>
+        <div>
+          <h2 id={titleId} className={styles.title}>
+            {title}
+          </h2>
+          {newModels && <p className={styles.subtitle}>{newModels.subtitle}</p>}
+        </div>
 
+        {newModels && (
+          <Link className={styles.catalog} to={newModels.catalogPath}>
+            {t('newModels.all')}
+          </Link>
+        )}
         <div className={styles.buttons}>
-          <button onClick={scrollLeft} className={styles.naxigatearrow}>
-            <img src="./img/icons/arrowLeft.svg" alt="ArrowLeft" />
+          <button
+            type="button"
+            onClick={() => move(-1)}
+            aria-label={t('hero.previous')}
+            aria-controls={sliderId}
+            disabled={edges.start}
+          >
+            <ChevronLeft size={18} aria-hidden="true" />
           </button>
-          <button onClick={scrollRight} className={styles.naxigatearrow}>
-            <img src="./img/icons/arrowRight.svg" alt="ArrowRight" />
+          <button
+            type="button"
+            onClick={() => move(1)}
+            aria-label={t('hero.next')}
+            aria-controls={sliderId}
+            disabled={edges.end}
+          >
+            <ChevronRight size={18} aria-hidden="true" />
           </button>
         </div>
       </div>
 
-      <div className={styles.slider} ref={sliderRef}>
-        {vieProduct.map(product => (
-          <ProductCard key={product.id} product={product} turnon={fullPrice} />
+      <div id={sliderId} className={styles.slider} ref={sliderRef}>
+        {visibleProducts.map(product => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            turnon={fullPrice}
+            compact={Boolean(newModels)}
+            isNew={newProductIds.has(product.id)}
+          />
         ))}
       </div>
     </section>

@@ -22,18 +22,25 @@ export const HomePage: React.FC = () => {
 
   return (
     <>
-      <main className={styles.main}>
+      <section className={styles.hero}>
         <h1 style={{ position: 'absolute', left: '-9999px' }}>
           Product Catalog
         </h1>
-        <p className={styles.title}>{t('title')}</p>
-      </main>
+        <div className={styles.intro}>
+          <p className={styles.title}>{t('title')}</p>
+          <p className={styles.subtitle}>{t('hero.subtitle')}</p>
+        </div>
+        <Carousel />
+      </section>
 
-      <Carousel />
       <CardCarousel
         products={newest}
         title={t('titlebrend')}
         fullPrice={false}
+        newModels={{
+          subtitle: t('newModels.subtitle'),
+          catalogPath: '/phones',
+        }}
       />
       <div className={styles.box}>
         {isLoading &&

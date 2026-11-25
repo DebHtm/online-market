@@ -1,184 +1,143 @@
+﻿import { ArrowRight, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import styles from './Carousel.module.scss';
-import React, { useContext, useEffect, useState } from 'react';
-import { ProductsContext } from '../../context/ProductsContext';
 
-const images = [
-  './img/imgcarousel/phone1.jpg',
-  './img/imgcarousel/phone2.jpg',
-  './img/imgcarousel/phone3.jpg',
+const slides = [
+  { model: 'apple-iphone-14-pro', color: 'spaceblack' },
+  { model: 'apple-iphone-13-pro-max', color: 'sierrablue' },
+  { model: 'apple-iphone-14-pro', color: 'gold' },
 ];
 
-export const Carousel: React.FC = () => {
-  const [currentIndex, setCurrentIndex] = useState(1);
-  const [isTransitioning, setIsTransitioning] = useState(true);
-  const [isPaused, setIsPaused] = useState(false);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const { t, i18n } = useTranslation();
-  const { cart, deletCard } = useContext(ProductsContext);
-
-  const extendedImages = [images[images.length - 1], ...images, images[0]];
-
-  const handleNext = () => {
-    setCurrentIndex(prev => prev + 1);
-  };
-
-  const handlePrev = () => {
-    setCurrentIndex(prev => prev - 1);
-  };
+export const Carousel = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [hasFocus, setHasFocus] = useState(false);
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
+  const { t } = useTranslation();
+  const activeSlide = slides[currentIndex];
 
   useEffect(() => {
-    if (isPaused) {
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    if (isHovered || hasFocus || motion.matches) {
       return;
     }
 
-    const interval = setInterval(() => {
-      setCurrentIndex(prev => prev + 1);
+    const timer = window.setTimeout(() => {
+      if (!motion.matches) {
+        setCurrentIndex((currentIndex + 1) % slides.length);
+      }
     }, 5000);
 
-    return () => clearInterval(interval);
-  }, [isPaused]);
+    return () => window.clearTimeout(timer);
+  }, [currentIndex, isHovered, hasFocus]);
 
-  useEffect(() => {
-    if (currentIndex === extendedImages.length - 1) {
-      setTimeout(() => {
-        setIsTransitioning(false);
-        setCurrentIndex(1);
-      }, 500);
-    }
-
-    if (currentIndex === 0) {
-      setTimeout(() => {
-        setIsTransitioning(false);
-        setCurrentIndex(images.length);
-      }, 500);
-    }
-  }, [currentIndex, extendedImages.length]);
-
-  useEffect(() => {
-    if (!isTransitioning) {
-      const timer = setTimeout(() => {
-        setIsTransitioning(true);
-      }, 50);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isTransitioning]);
-
-  const minSwipeDistance = 50;
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) {
-      return;
-    }
-
-    const distance = touchStart - touchEnd;
-
-    if (distance > minSwipeDistance) {
-      handleNext();
-    }
-
-    if (distance < -minSwipeDistance) {
-      handlePrev();
-    }
-  };
-
-  const realIndex =
-    currentIndex === 0
-      ? images.length - 1
-      : currentIndex === extendedImages.length - 1
-        ? 0
-        : currentIndex - 1;
-
-  const handleCheckout = () => {
-    const confirmed = window.confirm(t('check'));
-
-    if (confirmed) {
-      cart.forEach(item => deletCard(item.id));
-    }
+  const move = (direction: number) => {
+    setCurrentIndex(
+      index => (index + direction + slides.length) % slides.length,
+    );
   };
 
   return (
-    <div className={styles.Carousel}>
-      <div className={styles.decorBlock}>
-        <div className={styles.content}>
-          <p
-            className={`${styles.titlecard} ${
-              i18n.language.startsWith('de')
-                ? styles.germanText
-                : i18n.language.startsWith('ua')
-                  ? styles.ukrainianText
-                  : ''
-            }`}
-          >
-            {t('textincarusel')}
-          </p>
-          <p
-            className={`${styles.textp} ${
-              i18n.language === 'ua' ? styles.smallText : ''
-            }`}
-          >
-            {t('secoundtext')}
-          </p>
-          <button className={styles.buttonorder} onClick={handleCheckout}>
-            {t('buttuncarusel')}
-          </button>
-        </div>
-      </div>
-      <div
-        className={styles.carouselContent}
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-      >
-        <button className={styles.button} onClick={handlePrev}>
-          <img src="./img/icons/arrowLeft.svg" alt="Arrow" />
-        </button>
-        <div
-          className={styles.viewport}
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEnd}
-        >
-          <div
-            className={styles.track}
-            style={{
-              transform: `translateX(-${currentIndex * 100}%)`,
-              transition: isTransitioning ? 'transform 500ms ease' : 'none',
-            }}
-          >
-            {extendedImages.map((img, index) => (
-              <div className={styles.slide} key={index}>
-                <img src={`./${img}`} alt="" className={styles.carimg} />
-              </div>
-            ))}
-          </div>
-        </div>
-        <button className={styles.button} onClick={handleNext}>
-          <img src="./img/icons/arrowRight.svg" alt="Arrow" />
-        </button>
-      </div>
+    <section
+      className={styles.carousel}
+      aria-label={t('hero.carousel')}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onFocus={() => setHasFocus(true)}
+      onBlur={event => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          setHasFocus(false);
+        }
+      }}
+      onTouchStart={event => {
+        const touch = event.touches[0];
 
-      <div className={styles.dots}>
-        {images.map((_, index) => (
-          <button
-            key={index}
-            className={`${styles.dot} ${
-              realIndex === index ? styles.active : ''
-            }`}
-            onClick={() => setCurrentIndex(index + 1)}
+        touchStart.current = { x: touch.clientX, y: touch.clientY };
+      }}
+      onTouchCancel={() => {
+        touchStart.current = null;
+      }}
+      onTouchEnd={event => {
+        const start = touchStart.current;
+
+        touchStart.current = null;
+        if (!start) {
+          return;
+        }
+
+        const touch = event.changedTouches[0];
+        const distance = touch.clientX - start.x;
+
+        if (
+          Math.abs(distance) >= 50 &&
+          Math.abs(distance) > Math.abs(touch.clientY - start.y)
+        ) {
+          move(distance < 0 ? 1 : -1);
+        }
+      }}
+    >
+      <div className={styles.artwork} aria-hidden="true">
+        {slides.map(({ model, color }, index) => (
+          <img
+            key={color}
+            className={index === currentIndex ? styles.visible : undefined}
+            src={`./img/phones/${model}/${color}/02.webp`}
+            alt=""
           />
         ))}
       </div>
-    </div>
+
+      <div className={styles.content}>
+        <span className={styles.badge}>
+          <Sparkles size={14} aria-hidden="true" />
+          {t('hero.collection')}
+        </span>
+        <h2>{t('textincarusel')}</h2>
+        <p>{t('secoundtext')}</p>
+        <div className={styles.actions}>
+          <Link
+            className={styles.order}
+            to={`/phones/${activeSlide.model}-128gb-${activeSlide.color}`}
+          >
+            {t('buttuncarusel')}
+            <ArrowRight size={17} aria-hidden="true" />
+          </Link>
+          <Link className={styles.catalog} to="/phones">
+            {t('hero.catalog')}
+          </Link>
+        </div>
+      </div>
+
+      <div className={styles.arrows}>
+        <button
+          type="button"
+          onClick={() => move(-1)}
+          aria-label={t('hero.previous')}
+        >
+          <ChevronLeft size={19} />
+        </button>
+        <button
+          type="button"
+          onClick={() => move(1)}
+          aria-label={t('hero.next')}
+        >
+          <ChevronRight size={19} />
+        </button>
+      </div>
+      <div className={styles.dots}>
+        {slides.map(({ color }, index) => (
+          <button
+            key={color}
+            type="button"
+            aria-label={t('hero.slide', { number: index + 1 })}
+            aria-pressed={index === currentIndex}
+            onClick={() => setCurrentIndex(index)}
+          />
+        ))}
+      </div>
+    </section>
   );
 };

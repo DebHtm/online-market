@@ -1,10 +1,35 @@
 :root {
-  --color-primary: #313237;
-  --color-secondary: #89939A;
-  --color-icons: #B4BDC3;
-  --color-elements: #E2E6E9;
-  --color-hover-bg: #FAFBFC;
-  --color-white: #FFF;
-  --color-green: #27AE60;
-  --color-red: #EB5757;
+  /* Ваши старые переменные — обновлённые значения */
+  --color-primary: #111111;
+  --color-secondary: #434655;
+  --color-icons: #737686;
+  --color-elements: #E2E4EC;
+  --color-hover-bg: #FAFAFA;
+  --color-white: #FFFFFF;
+  --color-green: #16A34A;
+  --color-red: #BA1A1A;
+
+  /* Новые переменные из редизайна */
+  --color-accent: #2563EB;
+  --color-accent-hover: #004AC6;
+  --color-on-accent: #FFFFFF;
+  --color-image-bg: #F3F3FE;
+  --color-green-bg: #DCFCE7;
+  --color-green-text: #14532D;
+  --color-red-bg: #FFDAD6;
+  --color-red-text: #93000A;
+}
+
+.dark {
+  /* Переопределение 5 основных пар для тёмной темы */
+  --color-primary: #E1E2ED;
+  --color-secondary: #C3C6D7;
+  --color-icons: #8D90A0;
+  --color-elements: #434655;
+  --color-hover-bg: #11131B;
+  --color-white: #191B23;
+  --color-image-bg: #1D1F27;
+  --color-red: #FFB4AB;
+  --color-red-bg: #93000A;
+  --color-red-text: #FFDAD6;
 }

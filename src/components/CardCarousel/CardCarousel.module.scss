@@ -1,93 +1,141 @@
-@use '../../styles/grid' as *;
-@use '../../styles/breakpoints' as *;
-
-.sliderSection {
-  @include container;
-
-  margin-top: 80px;
-
-  margin-bottom: 80px;
+﻿.section {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1238px;
+  padding-inline: 24px;
+  margin: clamp(38px, 5vw, 74px) auto;
 }
 
 .header {
-  @include span(24, 12, 4);
-  @include grid;
-
+  display: flex;
   align-items: center;
-  margin-bottom: 32px;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.title {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: clamp(26px, 3.5vw, 34px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+}
+
+.subtitle {
+  margin: 6px 0 0;
+  color: var(--color-secondary);
+  font-size: 14px;
+}
+
+.catalog {
+  display: none;
+  color: var(--color-accent);
+  font-weight: 800;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .slider {
+  --columns: 4;
+  --gap: 24px;
+
+  position: relative;
   display: grid;
+  grid-auto-columns: calc(
+    (100% - (var(--columns) - 1) * var(--gap)) / var(--columns)
+  );
   grid-auto-flow: column;
-  column-gap: $gutter;
-
-  grid-auto-columns: calc((100% - 23 * #{$gutter}) / 24 * 6 + 5 * #{$gutter});
-
+  gap: var(--gap);
+  padding-bottom: 6px;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-snap-stop: always;
-  padding-bottom: 8px;
-
+  overscroll-behavior-x: contain;
   scrollbar-width: none;
-  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  @media (max-width: 1199px) {
-    grid-auto-columns: calc((100% - 11 * #{$gutter}) / 12 * 5 + 4 * #{$gutter});
-  }
-
-  @media (max-width: 639px) {
-    grid-auto-columns: calc((100% - 3 * #{$gutter}) / 4 * 3 + 2 * #{$gutter});
-  }
-}
-
-.titleh2 {
-  font-family: Mont, sans-serif;
-  font-weight: 800;
-  font-size: 32px;
-  line-height: 41px;
-  letter-spacing: -1%;
-  margin: 0;
-
-  color: var(--color-primary);
-
-  @include span(18, 9, 3);
-
-  @include mobile {
-  font-size: 22px;
-  line-height: 140%;
-  width: 180px;
-  }
-}
-
-.naxigatearrow {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 32px;
-  height: 32px;
-
-  background: none;
-  padding: 0;
-  cursor: pointer;
-  border: 1px solid var(--color-elements);
-  transition: border-color 0.3s ease;
-
-  &:hover {
-  border-color: var(--color-icons);
+  > article {
+    scroll-snap-align: start;
   }
 }
 
 .buttons {
-  @include span(6, 3, 1);
-
   display: flex;
-  justify-content: flex-end;
-  gap: 16px;
+  flex: none;
+  gap: 8px;
+
+  button {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--color-elements);
+    border-radius: 9px;
+    place-items: center;
+    color: var(--color-secondary);
+    background: var(--color-white);
+    cursor: pointer;
+    transition:
+      background-color 180ms ease,
+      border-color 180ms ease;
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+
+    &:hover:enabled {
+      border-color: var(--color-icons);
+      background: var(--color-image-bg);
+    }
+  }
 }
 
+@media (width <= 1000px) {
+  .slider {
+    --columns: 3;
+    --gap: 18px;
+  }
+}
+
+@media (width <= 760px) {
+  .section {
+    padding-inline: clamp(12px, 3vw, 24px);
+  }
+
+  .slider {
+    --columns: 2;
+    --gap: clamp(10px, 3vw, 20px);
+  }
+
+  .showcase {
+    .title {
+      font-size: clamp(25px, 6.5vw, 42px);
+    }
+
+    .subtitle,
+    .buttons {
+      display: none;
+    }
+
+    .catalog {
+      display: block;
+      flex: none;
+      font-size: clamp(13px, 3.1vw, 20px);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slider {
+    scroll-behavior: auto;
+  }
+
+  .buttons button {
+    transition: none;
+  }
+}

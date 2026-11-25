@@ -1,129 +1,127 @@
+﻿import { Check, Heart } from 'lucide-react';
+import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
+import { ProductsContext } from '../../context/ProductsContext';
 import { Product } from '../../types/Product';
 import styles from './ProductCard.module.scss';
-import { useContext } from 'react';
-import { ProductsContext } from '../../context/ProductsContext';
-import { useTranslation } from 'react-i18next';
 
 type Props = {
   product: Product;
   turnon: boolean;
+  compact?: boolean;
+  isNew?: boolean;
 };
 
-export const ProductCard: React.FC<Props> = ({ product, turnon }) => {
+const formatPrice = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 0,
+});
+
+export const ProductCard = ({
+  product,
+  turnon,
+  compact = false,
+  isNew = false,
+}: Props) => {
   const { cart, favorites, toggleCart, toggleFavorite } =
     useContext(ProductsContext);
   const { t } = useTranslation();
-
   const location = useLocation();
+  const isAdded = cart.some(item => item.id === product.itemId);
+  const isFavorite = favorites.some(item => item.id === product.itemId);
 
-  const isProductPage = location.pathname.split('/').length > 2;
-
-  const handleClick = () => {
-    if (isProductPage) {
+  const scrollFromDetails = () => {
+    if (location.pathname.split('/').length > 2) {
       window.scrollTo({
         top: 0,
-        behavior: 'smooth',
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          ? 'auto'
+          : 'smooth',
       });
     }
   };
 
-  const getCategory = () => {
-    if (product.category.includes('phones')) {
-      return 'phones';
-    }
-
-    if (product.category.includes('tablets')) {
-      return 'tablets';
-    }
-
-    return 'accessories';
-  };
-
-  const category = getCategory();
+  const brand = product.name.startsWith('Apple ') ? 'Apple ' : '';
+  const name = product.name.slice(brand.length);
 
   return (
-    <article className={styles.card}>
-      <Link
-        to={`/${category}/${product.itemId}`}
-        className={styles.linkOverlay}
-        onClick={handleClick}
-      />
-      <div className={styles.container}>
+    <article
+      className={compact ? `${styles.card} ${styles.compact}` : styles.card}
+    >
+      <div className={styles.media}>
+        <img src={`./${product.image}`} alt="" loading="lazy" />
+        {isNew && <span className={styles.badge}>{t('newModels.badge')}</span>}
+      </div>
+
+      <h3 className={styles.title}>
         <Link
-          to={`/${category}/${product.itemId}`}
-          className={styles.linkstyle}
+          to={`/${product.category}/${product.itemId}`}
+          onClick={scrollFromDetails}
         >
-          <img
-            src={`./${product.image}`}
-            alt={product.name}
-            className={styles.image}
-          />
+          <span className={styles.brand}>{brand}</span>
+          {name}
         </Link>
+      </h3>
 
-        <h3 className={styles.title}>{product.name}</h3>
-        <div className={styles.pricebox}>
-          <p className={styles.price}>${product.price}</p>
-          {turnon && <p className={styles.fullPrice}>${product.fullPrice}</p>}
+      <div className={styles.prices}>
+        <span>{formatPrice.format(product.price)}</span>
+        {turnon && <s>{formatPrice.format(product.fullPrice)}</s>}
+      </div>
+
+      <dl className={styles.specs}>
+        <div>
+          <dt>{t('screen')}</dt>
+          <dd>{product.screen}</dd>
         </div>
-
-        <div className={styles.line}></div>
-
-        <ul className={styles.specs}>
-          <li>
-            <span className={styles.lefttext}>{t('screen')}</span>
-            <span className={styles.righttext}>{product.screen}</span>
-          </li>
-          <li>
-            <span className={styles.lefttext}>{t('capacity')}</span>
-            <span className={styles.righttext}>{product.capacity}</span>
-          </li>
-          <li>
-            <span className={styles.lefttext}>{t('ram')}</span>
-            <span className={styles.righttext}>{product.ram}</span>
-          </li>
-        </ul>
-
-        <div className={styles.actions}>
-          <button
-            className={
-              cart.some(item => item.id === product.itemId)
-                ? `${styles.button} ${styles.active}`
-                : styles.button
-            }
-            onClick={e => {
-              e.stopPropagation();
-              toggleCart(product.itemId);
-              handleClick();
-            }}
-          >
-            <p
-              className={
-                cart.some(item => item.id === product.itemId)
-                  ? `${styles.buttontext} ${styles.activetext}`
-                  : styles.buttontext
-              }
-            >
-              {!cart.some(item => item.id === product.itemId) && t('button')}
-              {cart.some(item => item.id === product.itemId) && t('buttonadd')}
-            </p>
-          </button>
-          <button
-            className={styles.icon}
-            onClick={e => {
-              e.stopPropagation();
-              toggleFavorite(product.itemId, turnon);
-            }}
-          >
-            {!favorites.some(item => item.id === product.itemId) && (
-              <img src="./img/icons/heart.svg" alt="Heart" />
-            )}
-
-            {favorites.some(item => item.id === product.itemId) && (
-              <img src="./img/icons/heartactive.svg" alt="HeartActive" />
-            )}
-          </button>
+        <div>
+          <dt>{t('capacity')}</dt>
+          <dd>{product.capacity}</dd>
         </div>
+        <div>
+          <dt>{t('ram')}</dt>
+          <dd>{product.ram}</dd>
+        </div>
+      </dl>
+
+      <div className={styles.actions}>
+        <button
+          type="button"
+          className={styles.buy}
+          aria-pressed={isAdded}
+          onClick={() => {
+            toggleCart(product.itemId);
+            scrollFromDetails();
+          }}
+        >
+          {isAdded ? (
+            <>
+              <Check size={15} aria-hidden="true" />
+              {t('buttonadd')}
+            </>
+          ) : (
+            <>
+              <span className={styles['buy-label']}>{t('button')}</span>
+              <span className={styles['short-buy-label']}>
+                {t('newModels.add')}
+              </span>
+            </>
+          )}
+        </button>
+        <button
+          type="button"
+          className={styles.favorite}
+          aria-label={t('newModels.favorite', { product: product.name })}
+          aria-pressed={isFavorite}
+          onClick={() => toggleFavorite(product.itemId, turnon)}
+        >
+          <Heart
+            size={18}
+            fill={isFavorite ? 'currentColor' : 'none'}
+            aria-hidden="true"
+          />
+        </button>
       </div>
     </article>
   );

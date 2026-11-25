@@ -1,33 +1,56 @@
-@use '../../styles/grid' as *;
+﻿@use '../../styles/grid' as *;
 @use '../../styles/breakpoints' as *;
 
-.main {
-  @include container;
-  @include grid;
+.hero {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1238px;
+  padding: clamp(28px, 3.6vw, 48px) 24px 0;
+  margin: 0 auto 32px;
+}
+
+.intro {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
 }
 
 .title {
-  @include span(24);
-
-  margin-top: 56px;
-  margin-bottom: 56px;
-  font-family: Mont, sans-serif;
-  font-weight: 800;
-  font-size: 48px;
-  line-height: 56px;
-  letter-spacing: -1%;
-
+  max-width: 560px;
+  margin: 0;
   color: var(--color-primary);
+  font-size: clamp(31px, 3.3vw, 46px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
 
-  @include tablet {
-    @include span(8);
+.subtitle {
+  max-width: 315px;
+  margin: 0;
+  color: var(--color-secondary);
+  font-size: 14px;
+  line-height: 1.45;
+  text-align: right;
+}
+
+@media (width <= 760px) {
+  .subtitle {
+    display: none;
+  }
+}
+
+@include mobile {
+  .hero {
+    padding-inline: 16px;
   }
 
-  @include mobile {
-    @include span(4);
-
-    font-size: 32px;
-    line-height: 41px;
+  .title {
+    font-size: clamp(29px, 8vw, 45px);
+    text-wrap: initial;
   }
 }
 

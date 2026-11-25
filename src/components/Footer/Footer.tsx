@@ -15,7 +15,8 @@ export const Footer = () => {
           <ul className={styles.list}>
             <li className={styles.li_links}>
               <a
-                href="https://github.com/DebHtm/react_phone-catalog"
+                // eslint-disable-next-line max-len
+                href="git remote add origin https://github.com/DebHtm/online-market"
                 className={styles.link}
                 target="_blank"
                 rel="noopener noreferrer"

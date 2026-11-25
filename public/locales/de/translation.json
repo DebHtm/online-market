@@ -1,8 +1,8 @@
 {
   "title": "Willkommen im Nice Gadgets Store!",
-  "textincarusel": "Jetzt in unserem Shop erhältlich!👌",
-  "secoundtext": "Sei der Erste!",
-  "buttuncarusel": "JETZT BESTELLEN",
+  "textincarusel": "Jetzt in unserem Shop erhältlich!",
+  "secoundtext": "Entdecke die Topmodelle mit offizieller Garantie und attraktiven Trade-in-Angeboten.",
+  "buttuncarusel": "Jetzt bestellen",
   "titlebrend": "Brandneue Modelle",
   "button": "In den Warenkorb",
   "buttonadd": "Hinzugefügt",
@@ -52,5 +52,36 @@
   "all": "Alle",
   "emptyCategory": "In dieser Kategorie gibt es noch keine Produkte.",
   "previousPage": "Vorherige Seite",
-  "nextPage": "Nächste Seite"
+  "nextPage": "Nächste Seite",
+  "header": {
+    "all": "Alle",
+    "menu": "Menü",
+    "categories": "Kategorien",
+    "search": "Produkte suchen",
+    "placeholder": "iPhone, iPad, Watch suchen…",
+    "empty": "Keine Produkte gefunden",
+    "loading": "Produkte werden geladen…",
+    "theme": "Darstellung",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "language": "Sprache",
+    "favorites": "Favoriten ({{count}})",
+    "cart": "Warenkorb ({{count}})"
+  },
+  "hero": {
+    "subtitle": "Offizielle Apple-Produkte mit 12 Monaten Garantie und Lieferung innerhalb von 24 Stunden.",
+    "collection": "Neue Kollektion 2026",
+    "catalog": "Katalog ansehen",
+    "carousel": "Highlights im Shop",
+    "previous": "Vorherige Folie",
+    "next": "Nächste Folie",
+    "slide": "Folie {{number}}"
+  },
+  "newModels": {
+    "subtitle": "Neue iPhone-14-Modelle in allen Farben",
+    "all": "Alle Modelle",
+    "badge": "Neu",
+    "add": "In den Korb",
+    "favorite": "Favorit: {{product}}"
+  }
 }
