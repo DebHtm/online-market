@@ -141,3 +141,33 @@ export const ProductCard = ({
     </article>
   );
 };
+
+export const ProductCardSkeleton = ({
+  compact = false,
+}: {
+  compact?: boolean;
+}) => (
+  <article
+    className={`${styles.card} ${styles.placeholder} ${compact ? styles.compact : ''}`}
+    aria-hidden="true"
+  >
+    <div className={`${styles.media} ${styles.shimmer}`} />
+    <div className={styles.title}>
+      <div className={`${styles.line} ${styles.shimmer}`} />
+      <div className={`${styles.line} ${styles.shimmer}`} />
+    </div>
+    <div className={`${styles['price-placeholder']} ${styles.shimmer}`} />
+    <div className={styles.specs}>
+      {Array.from({ length: 3 }, (_, index) => (
+        <div key={index}>
+          <span className={`${styles.line} ${styles.shimmer}`} />
+          <span className={`${styles.line} ${styles.shimmer}`} />
+        </div>
+      ))}
+    </div>
+    <div className={styles.actions}>
+      <span className={`${styles.buy} ${styles.shimmer}`} />
+      <span className={`${styles.favorite} ${styles.shimmer}`} />
+    </div>
+  </article>
+);

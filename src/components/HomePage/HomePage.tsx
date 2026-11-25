@@ -4,7 +4,6 @@ import { Carousel } from '../Carousel';
 import styles from './HomePage.module.scss';
 import { Category } from '../Category';
 import { useProducts } from '../../hooks/useProducts';
-import ContentLoader from 'react-content-loader';
 import { useTranslation } from 'react-i18next';
 
 export const HomePage: React.FC = () => {
@@ -35,6 +34,7 @@ export const HomePage: React.FC = () => {
 
       <CardCarousel
         products={newest}
+        isLoading={isLoading}
         title={t('titlebrend')}
         fullPrice={false}
         newModels={{
@@ -42,63 +42,16 @@ export const HomePage: React.FC = () => {
           catalogPath: '/phones',
         }}
       />
-      <div className={styles.box}>
-        {isLoading &&
-          Array.from({ length: 4 }).map((_, index) => (
-            <ContentLoader
-              key={index}
-              speed={2}
-              width={288}
-              height={506}
-              viewBox="0 0 288 506"
-              backgroundColor="#f3f3f3"
-              foregroundColor="#ecebeb"
-            >
-              <rect x="47" y="47" rx="0" ry="0" width="121" height="116" />
-              <rect x="7" y="179" rx="0" ry="0" width="198" height="16" />
-              <rect x="7" y="202" rx="0" ry="0" width="198" height="16" />
-              <rect x="7" y="245" rx="0" ry="0" width="150" height="48" />
-              <rect x="7" y="333" rx="0" ry="0" width="198" height="16" />
-              <rect x="7" y="353" rx="0" ry="0" width="198" height="16" />
-              <rect x="7" y="373" rx="0" ry="0" width="198" height="16" />
-              <rect x="17" y="415" rx="0" ry="0" width="103" height="42" />
-              <rect x="130" y="413" rx="0" ry="0" width="41" height="42" />
-            </ContentLoader>
-          ))}
-      </div>
 
       <Category phones={phones} tablets={tablets} accessories={accessories} />
       <CardCarousel
         products={hotPrices}
+        isLoading={isLoading}
         title={t('titleprice')}
         subtitle={t('hotPricesSubtitle')}
         showDiscount
         fullPrice={true}
       />
-      <div className={styles.box}>
-        {isLoading &&
-          Array.from({ length: 4 }).map((_, index) => (
-            <ContentLoader
-              key={index}
-              speed={2}
-              width={288}
-              height={506}
-              viewBox="0 0 288 506"
-              backgroundColor="#f3f3f3"
-              foregroundColor="#ecebeb"
-            >
-              <rect x="47" y="47" rx="0" ry="0" width="121" height="116" />
-              <rect x="7" y="179" rx="0" ry="0" width="198" height="16" />
-              <rect x="7" y="202" rx="0" ry="0" width="198" height="16" />
-              <rect x="7" y="245" rx="0" ry="0" width="150" height="48" />
-              <rect x="7" y="333" rx="0" ry="0" width="198" height="16" />
-              <rect x="7" y="353" rx="0" ry="0" width="198" height="16" />
-              <rect x="7" y="373" rx="0" ry="0" width="198" height="16" />
-              <rect x="17" y="415" rx="0" ry="0" width="103" height="42" />
-              <rect x="130" y="413" rx="0" ry="0" width="41" height="42" />
-            </ContentLoader>
-          ))}
-      </div>
     </>
   );
 };

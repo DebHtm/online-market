@@ -181,19 +181,6 @@
   }
 }
 
-.skeleton {
-  padding: 16px;
-  border: 1px solid var(--color-elements);
-  border-radius: 17px;
-  background: var(--color-white);
-
-  div {
-    aspect-ratio: 1;
-    border-radius: 12px;
-    background: var(--color-image-bg);
-  }
-}
-
 .message {
   margin: 0 0 16px;
   color: var(--color-secondary);

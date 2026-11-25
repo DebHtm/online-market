@@ -124,7 +124,21 @@ export const ProductDetailsPage = () => {
     return (
       <div className={styles.layout} role="status">
         <p className={styles.loading}>{t('header.loading')}</p>
-        <div className={styles['loading-panel']} aria-hidden="true" />
+        <div className={styles.overview} aria-hidden="true">
+          <div className={styles.gallery}>
+            <div className={`${styles.preview} ${styles['loading-panel']}`} />
+            <div className={styles.thumbnails}>
+              {Array.from({ length: 3 }, (_, index) => (
+                <div key={index} className={styles['loading-thumb']} />
+              ))}
+            </div>
+          </div>
+          <div className={styles.panel}>
+            <div className={styles['loading-line']} />
+            <div className={styles['loading-line']} />
+            <div className={styles['loading-action']} />
+          </div>
+        </div>
       </div>
     );
   }

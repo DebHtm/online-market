@@ -138,5 +138,26 @@
     "show": "Show:",
     "pagination": "Catalog pages",
     "page": "Page {{number}}"
+  },
+  "assistant": {
+    "preview": "Preview",
+    "subtitle": "Catalog search",
+    "greeting": "Find products by model, storage or budget. Try iPhone 14 Pro under $1200.",
+    "matches": "These products match your search:",
+    "noMatches": "No products match those filters. Try another model or budget.",
+    "unsupported": "This preview searches for iPhone, iPad and Apple Watch. Enter a model name to browse matches.",
+    "error": "Could not load a reply. Please try again.",
+    "placeholder": "Ask Nice AI…",
+    "send": "Send",
+    "close": "Minimize chat",
+    "open": "Ask Nice AI",
+    "history": "Chat messages",
+    "pending": "Finding products…",
+    "suggestions": "Suggested searches",
+    "prompts": {
+      "iphone": "iPhone 14 Pro under $1200",
+      "ipad": "Show iPad",
+      "watch": "Show Apple Watch"
+    }
   }
 }

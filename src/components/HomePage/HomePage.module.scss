@@ -1,5 +1,4 @@
-﻿@use '../../styles/grid' as *;
-@use '../../styles/breakpoints' as *;
+﻿@use '../../styles/breakpoints' as *;
 
 .hero {
   box-sizing: border-box;
@@ -52,13 +51,4 @@
     font-size: clamp(29px, 8vw, 45px);
     text-wrap: initial;
   }
-}
-
-.box {
-  @include container;
-
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
 }

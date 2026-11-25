@@ -138,5 +138,26 @@
     "show": "Anzeigen:",
     "pagination": "Katalogseiten",
     "page": "Seite {{number}}"
+  },
+  "assistant": {
+    "preview": "Vorschau",
+    "subtitle": "Katalogsuche",
+    "greeting": "Suche nach Modell, Speicher oder Budget. Beispiel: iPhone 14 Pro bis $1200.",
+    "matches": "Diese Produkte passen zu deiner Suche:",
+    "noMatches": "Keine Treffer für diese Filter. Probiere ein anderes Modell oder Budget.",
+    "unsupported": "Diese Vorschau durchsucht iPhone, iPad und Apple Watch. Gib einen Modellnamen ein.",
+    "error": "Die Antwort konnte nicht geladen werden. Versuche es erneut.",
+    "placeholder": "Frag Nice AI…",
+    "send": "Senden",
+    "close": "Chat minimieren",
+    "open": "Nice AI fragen",
+    "history": "Chatnachrichten",
+    "pending": "Produkte werden gesucht…",
+    "suggestions": "Suchvorschläge",
+    "prompts": {
+      "iphone": "iPhone 14 Pro bis $1200",
+      "ipad": "iPad anzeigen",
+      "watch": "Apple Watch anzeigen"
+    }
   }
 }

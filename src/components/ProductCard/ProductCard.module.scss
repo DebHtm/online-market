@@ -1,4 +1,6 @@
-﻿.card {
+@use '../../styles/skeleton' as *;
+
+.card {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -251,5 +253,56 @@
   .buy,
   .favorite {
     transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card:not(.placeholder) {
+    animation: product-card-in 240ms ease-out both;
+  }
+}
+
+@keyframes product-card-in {
+  from {
+    opacity: 0.55;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.placeholder {
+  pointer-events: none;
+
+  .title {
+    display: grid;
+    align-content: center;
+    gap: 6px;
+  }
+
+  .line {
+    width: 42%;
+    height: 9px;
+    border-radius: 6px;
+
+    &:last-child {
+      width: 28%;
+    }
+  }
+
+  .title .line:first-child {
+    width: 82%;
+  }
+
+  .price-placeholder {
+    width: 34%;
+    height: 25px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+
+  .shimmer {
+    @include shimmer;
   }
 }

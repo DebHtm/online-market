@@ -10,7 +10,7 @@ import { useRef, useState } from 'react';
 import styles from './ProductPage.module.scss';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { NotFound } from '../NotFound';
-import { ProductCard } from '../ProductCard';
+import { ProductCard, ProductCardSkeleton } from '../ProductCard';
 import { Category } from '../../types';
 import { useProducts } from '../../hooks/useProducts';
 import { useTranslation } from 'react-i18next';
@@ -302,8 +302,8 @@ export const ProductPage = () => {
       <ul className={styles.grid} aria-busy={isLoading}>
         {isLoading
           ? Array.from({ length: 4 }, (_, index) => (
-              <li key={index} className={styles.skeleton} aria-hidden="true">
-                <div />
+              <li key={index} aria-hidden="true">
+                <ProductCardSkeleton compact />
               </li>
             ))
           : visibleProducts.map(product => (

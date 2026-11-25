@@ -1,4 +1,5 @@
-﻿@use '../../styles/breakpoints' as *;
+@use '../../styles/skeleton' as *;
+@use '../../styles/breakpoints' as *;
 
 .layout {
   box-sizing: border-box;
@@ -377,10 +378,32 @@
   color: var(--color-secondary);
 }
 
-.loading-panel {
-  min-height: 300px;
-  border-radius: 20px;
-  background: var(--color-image-bg);
+.loading-panel,
+.loading-thumb,
+.loading-line,
+.loading-action {
+  @include shimmer;
+}
+
+.loading-thumb {
+  aspect-ratio: 1;
+  border-radius: 10px;
+}
+
+.loading-line {
+  width: 55%;
+  height: 14px;
+  border-radius: 8px;
+  margin-bottom: 22px;
+
+  &:first-child {
+    width: 38%;
+  }
+}
+
+.loading-action {
+  height: 44px;
+  border-radius: 9px;
 }
 
 @include mobile {

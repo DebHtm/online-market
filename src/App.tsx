@@ -1,4 +1,5 @@
 import './App.scss';
+import { CatalogAssistant } from './components/CatalogAssistant';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import './styles/_colors.scss';
@@ -17,9 +18,6 @@ type Favorite = {
   id: string;
   active: boolean;
 };
-
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-const DEV_DELAY = true;
 
 export const App = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -77,56 +75,33 @@ export const App = () => {
   };
 
   useEffect(() => {
-    const loadProducts = async () => {
-      setIsLoading(true);
+    const controller = new AbortController();
+    const { signal } = controller;
 
-      try {
-        if (DEV_DELAY) {
-          await delay(5000);
-        }
+    const load = async <T,>(file: string, setData: (data: T[]) => void) => {
+      const response = await fetch(`./api/${file}.json`, { signal });
+      if (!response.ok) {
+        throw new Error(`Failed to load ${file}`);
+      }
 
-        const res = await fetch('./api/products.json');
-
-        if (!res.ok) {
-          throw new Error('Failed to load products');
-        }
-
-        const data = await res.json();
-
-        setProducts(data);
-      } catch (e) {
-      } finally {
-        setIsLoading(false);
+      const data: T[] = await response.json();
+      if (!signal.aborted) {
+        setData(data);
       }
     };
 
-    loadProducts();
-  }, []);
-
-  useEffect(() => {
-    const loadData = async () => {
-      setIsLoading(true);
-      try {
-        if (DEV_DELAY) {
-          await delay(5000);
-        }
-
-        const [phonesRes, tabletsRes, accessoriesRes] = await Promise.all([
-          fetch('./api/phones.json'),
-          fetch('./api/tablets.json'),
-          fetch('./api/accessories.json'),
-        ]);
-
-        setPhones(await phonesRes.json());
-        setTablets(await tabletsRes.json());
-        setAccessories(await accessoriesRes.json());
-      } catch (error) {
-      } finally {
+    void Promise.allSettled([
+      load('products', setProducts),
+      load('phones', setPhones),
+      load('tablets', setTablets),
+      load('accessories', setAccessories),
+    ]).then(() => {
+      if (!signal.aborted) {
         setIsLoading(false);
       }
-    };
+    });
 
-    loadData();
+    return () => controller.abort();
   }, []);
 
   const [counts, setCounts] = useState<Record<string, number>>(() => {
@@ -212,6 +187,7 @@ export const App = () => {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
+        <CatalogAssistant />
       </ProductsContext.Provider>
       <Footer />
     </div>

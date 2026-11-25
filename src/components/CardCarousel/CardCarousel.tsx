@@ -3,13 +3,14 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Product } from '../../types/Product';
-import { ProductCard } from '../ProductCard';
+import { ProductCard, ProductCardSkeleton } from '../ProductCard';
 import styles from './CardCarousel.module.scss';
 
 type Props = {
   products: Product[];
   title: string;
   fullPrice: boolean;
+  isLoading?: boolean;
   showDiscount?: boolean;
   compactCards?: boolean;
   subtitle?: string;
@@ -20,6 +21,7 @@ export const CardCarousel = ({
   products,
   title,
   fullPrice,
+  isLoading = false,
   showDiscount = false,
   compactCards = false,
   subtitle,
@@ -123,7 +125,7 @@ export const CardCarousel = ({
             onClick={() => move(-1)}
             aria-label={t('hero.previous')}
             aria-controls={sliderId}
-            disabled={edges.start}
+            disabled={isLoading || edges.start}
           >
             <ChevronLeft size={18} aria-hidden="true" />
           </button>
@@ -132,24 +134,36 @@ export const CardCarousel = ({
             onClick={() => move(1)}
             aria-label={t('hero.next')}
             aria-controls={sliderId}
-            disabled={edges.end}
+            disabled={isLoading || edges.end}
           >
             <ChevronRight size={18} aria-hidden="true" />
           </button>
         </div>
       </div>
 
-      <div id={sliderId} className={styles.slider} ref={sliderRef}>
-        {visibleProducts.map(product => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            turnon={fullPrice}
-            showDiscount={showDiscount}
-            compact={compactCards || Boolean(newModels)}
-            isNew={newProductIds.has(product.id)}
-          />
-        ))}
+      <div
+        id={sliderId}
+        className={styles.slider}
+        ref={sliderRef}
+        aria-busy={isLoading}
+      >
+        {isLoading
+          ? Array.from({ length: 4 }, (_, index) => (
+              <ProductCardSkeleton
+                key={index}
+                compact={compactCards || Boolean(newModels)}
+              />
+            ))
+          : visibleProducts.map(product => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                turnon={fullPrice}
+                showDiscount={showDiscount}
+                compact={compactCards || Boolean(newModels)}
+                isNew={newProductIds.has(product.id)}
+              />
+            ))}
       </div>
     </section>
   );
