@@ -126,8 +126,10 @@
   flex-direction: column;
   gap: 12px;
   padding: 15px;
-  overflow-y: auto;
+  overflow: hidden auto;
   overscroll-behavior: contain;
+  scrollbar-color: var(--color-icons) transparent;
+  scrollbar-width: thin;
 
   &:focus-visible {
     outline-offset: -2px;
@@ -252,13 +254,12 @@
 .suggestions {
   display: flex;
   gap: 6px;
+  flex-wrap: wrap;
   padding: 0 14px 13px;
-  overflow-x: auto;
-  scrollbar-width: thin;
 
   button {
+    max-width: 100%;
     min-height: 29px;
-    flex: none;
     padding: 3px 9px;
     border: 1px solid var(--color-elements);
     border-radius: 99px;
@@ -266,7 +267,7 @@
     background: var(--color-image-bg);
     font-size: 11px;
     font-weight: 800;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
 
     &:where(:hover:enabled) {
       border-color: var(--color-accent);
